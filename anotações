@@ -1,0 +1,4 @@
+criar uma classe genérica que gerencie o paralelismo que poderá ser utilizado em qualquer programa
+
+criar uma BAPI Z apenas para expor como seria o funcionamento standard, criar algumas validações e realizar modify dentro dela. Assim poderá se mostrar o desempenho do programa
+sem necessitar de um cenário real.
