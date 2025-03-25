@@ -1,0 +1,89 @@
+DATA: lt_destinations TYPE TABLE OF rfcdest,
+      lv_taskname    TYPE string,
+      lv_index       TYPE i,
+      lv_max_tasks   TYPE i,
+      lv_running     TYPE i,
+      lt_logs        TYPE TABLE OF zlog_table, " Tabela Z de logs
+      ls_log         TYPE zlog_table.
+
+" Buscar servidores disponíveis no grupo
+CALL FUNCTION 'RFC_GROUP_GET_SERVERS'
+  EXPORTING
+    group_name = 'parallel_group'
+  TABLES
+    server_list = lt_destinations.
+
+DESCRIBE TABLE lt_destinations LINES lv_max_tasks.
+
+CALL FUNCTION 'TH_GET_WORK_PROCESS_INFO'
+  IMPORTING
+    dialog  = lv_max_tasks  
+    update  = lv_running.
+
+lv_max_tasks = lv_max_tasks / 2.
+
+IF lt_destinations IS NOT INITIAL AND lv_max_tasks > 0.
+
+  LOOP AT lt_destinations INTO DATA(lv_destination).
+
+    lv_index = sy-tabix.
+    lv_taskname = |TASK_{ lv_index }|.
+
+    CALL FUNCTION 'RFC_GET_NUMBER_OF_FREE_WPS'
+      EXPORTING
+        rfc_destination = lv_destination
+      IMPORTING
+        available_wps   = lv_running.
+
+    IF lv_running < lv_max_tasks.
+      " Início do processamento
+      ls_log-task_id = lv_taskname.
+      ls_log-status  = 'INICIADO'.
+      ls_log-msg     = 'Execução iniciada no servidor ' && lv_destination.
+      ls_log-timestamp = sy-datum && sy-uzeit.
+      APPEND ls_log TO lt_logs.
+
+      " Chamar a BAPI
+      CALL FUNCTION 'BAPI_SALESORDER_CREATEFROMDAT2'
+        STARTING NEW TASK lv_taskname
+        DESTINATION lv_destination
+        PERFORMING callback ON END OF TASK
+        EXPORTING
+          order_header_in = lt_order_header
+        TABLES
+          return = lt_return.
+
+    ELSE.
+      " Aguardar para liberar mais threads
+      WAIT UP TO 2 SECONDS.
+    ENDIF.
+
+  ENDLOOP.
+
+  " Gravar logs em lote no banco
+  INSERT zlog_table FROM TABLE lt_logs.
+  COMMIT WORK.
+
+  " Aguardar término dos processos
+  WAIT UNTIL sy-subrc <> 0.
+
+ELSE.
+  MESSAGE 'Nenhum servidor disponível ou sem work processes suficientes' TYPE 'E'.
+ENDIF.
+
+
+Como Isso Controla o Consumo de Recursos?
+✔ Consulta a quantidade de work processes disponíveis (TH_GET_WORK_PROCESS_INFO)
+✔ Define um limite seguro de uso (exemplo: 50% dos disponíveis)
+✔ Evita disparar execuções simultâneas demais (RFC_GET_NUMBER_OF_FREE_WPS)
+✔ Aguarda se necessário (WAIT UP TO 2 SECONDS) antes de criar novas tarefas
+
+Benefícios
+✅ Redução do risco de excesso de carga no servidor
+✅ Melhor distribuição da carga entre múltiplos work processes
+✅ Execução eficiente de BAPIs sem consumir toda a memória
+
+  Como Esse Código Otimiza o Log?
+✔ Evita múltiplos acessos ao banco (os logs são acumulados na tabela interna lt_logs)
+✔ Grava logs apenas quando necessário (uma única operação INSERT no final do loop)
+✔ Inclui status e timestamp, permitindo rastrear a execução de cada processo
