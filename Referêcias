@@ -1,1 +1,10 @@
 https://ulbra-to.br/encoinfo/wp-content/uploads/2020/03/Sistema_Concorrente.pdf => esse artigo fala de maneira simples o que é thread, processo paralelo e a implementação em JAVA
+-> A programação concorrente diferencia-se de programação paralela e distribuída, da
+seguinte forma: na programação paralela os processos são executados simultaneamente, em
+um computador com multiprocessadores, que se encarregam dos diversos processos em
+paralelo, na programação distribuída os processos são executados em vários computadores
+ligados através de uma rede : "essa critação é boa porque fala sobre a definicação do paralelismo e para complementar
+deve-se falar também sobre a arquitetura do sap para indicar porque podemos utilizar essa técnica"
+
+arquitetura do sap
+https://learning.sap.com/learning-journeys/introducing-sap-abap-platform-fundamentals/discussing-the-sap-three-tier-client-server-architecture?utm_source=chatgpt.com
