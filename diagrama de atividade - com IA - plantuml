@@ -1,0 +1,19 @@
+@startuml
+start
+
+:Recebimento da demanda do cliente;
+:Informar BAPI desejada e estrutura dos dados;
+:IA pesquisa estrutura da BAPI automaticamente;
+:IA gera o código ABAP automaticamente;
+:Validação automatizada (sintaxe e boas práticas);
+:Testes da execução da BAPI com dados simulados;
+
+if (Funcionou corretamente?) then (Sim)
+  :Entrega da solução ao cliente;
+else (Não)
+  :Ajustes no input ou refinamento da IA;
+  -> [Repetir Geração/Validação];
+endif
+
+stop
+@enduml
