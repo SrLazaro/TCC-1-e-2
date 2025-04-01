@@ -1,18 +1,20 @@
-@startuml
+@startuml Diagrama_Manual
+title Processo Manual de Geração de Código ABAP
+
 start
-
 :Recebimento da demanda do cliente;
-:Análise da BAPI a ser utilizada;
+:Análise da planilha;
+:Análise da BAPI;
 :Criação manual do código ABAP;
-:Importação manual de planilha de dados;
-:Testes e ajustes no programa;
-:Execução da BAPI com dados importados;
+:Testes unitários e ajustes no código;
+:Envio para validação funcional;
 
-if (Funcionou corretamente?) then (Sim)
+if ("Funcionou corretamente?") then (Sim)
   :Entrega da solução ao cliente;
 else (Não)
   :Correções e retrabalho no código;
-  -> [Repetir Testes];
+  :Repetir testes;
+  -> [Retorna para validação funcional]
 endif
 
 stop
