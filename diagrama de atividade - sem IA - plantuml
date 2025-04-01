@@ -1,0 +1,19 @@
+@startuml
+start
+
+:Recebimento da demanda do cliente;
+:Análise da BAPI a ser utilizada;
+:Criação manual do código ABAP;
+:Importação manual de planilha de dados;
+:Testes e ajustes no programa;
+:Execução da BAPI com dados importados;
+
+if (Funcionou corretamente?) then (Sim)
+  :Entrega da solução ao cliente;
+else (Não)
+  :Correções e retrabalho no código;
+  -> [Repetir Testes];
+endif
+
+stop
+@enduml
