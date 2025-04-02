@@ -8,8 +8,9 @@ https://docs.google.com/spreadsheets/d/1mpQeQWMxpN45NQbErjuyFdxn71zr5_YSuBrz2OhN
 Link do arquivo do TCC
 https://docs.google.com/document/d/14OZSyzP4Izzg4Eil01VIr7BaKhD0W84w/edit?usp=sharing&ouid=118278057243716892115&rtpof=true&sd=true
 
-Diagrama de Atividades
+Diagrama de Sequência 
 
-![image](https://github.com/user-attachments/assets/4082d32e-134f-49ed-a5d8-8a1c4df2499d)
+![image](https://github.com/user-attachments/assets/e3b165ae-8e10-4af3-acab-fcabbea95fef)
 
-![image](https://github.com/user-attachments/assets/430e3cdb-b36c-4a68-8132-080e1801f0c3)
+![image](https://github.com/user-attachments/assets/66d53e4e-39f4-4e79-bfd4-619cf5604038)
+
